@@ -8,17 +8,7 @@ import { products } from './items.js'
 import CrudBar from './component/crud-bar/CrudBar'
 import ModalDialog from './component/modal-dialog/ModalDialog'
 
-const initialState = {
-  isOpen: false,
-};
-
 function App() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
-
-  const closeModal = () => {
-    
-  };
-
   return (
     <>
       <header className='header-container'>
@@ -32,12 +22,6 @@ function App() {
       <footer className='navbar-bottom'>
         <CrudBar/>
       </footer>
-      {isModalOpen &&
-        <ModalDialog onClick={closeModal}>
-          <b>Hello, newcommer!</b>
-          <p>Welcome to the DarkShop!</p>
-        </ModalDialog>
-      }
     </>
   )
 }
