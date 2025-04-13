@@ -1,4 +1,6 @@
-export const products = [
+import { newAddedItemList, newTruncItemList } from "./utils/crud";
+
+let products = [
     {
         id: 1,
         name: 'M16A1 5.56mm rifle',
@@ -200,3 +202,5 @@ export const products = [
         category: 'rifle'
     }
 ];
+
+export const getProducts = () => products;
