@@ -4,12 +4,13 @@ import GridItems from './component/items/GridItems'
 import CrudBar from './component/crud-bar/CrudBar'
 import { getProducts } from './items';
 import { newAddedItemList, newTruncItemList } from './utils/crud';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 function App() {
   const [products, setProducts] = useState(getProducts());
   const [searchQuery, setSearchQuery] = useState('');
-  
+  const [sortConfig, setSortConfig] = useState({ field: '', direction: '' });
+
   const addNewProduct = (item) => {
     setProducts(prev => newAddedItemList(prev, item));
   };
@@ -22,7 +23,22 @@ function App() {
     setProducts(prev => prev.map(item => item.id === updatedItem.id ? updatedItem : item));
   };
 
-  const filteredProducts = products.filter(product => {
+  const sortedProducts = useMemo(() => {
+    const sorted = [...products];
+    if (sortConfig.field) {
+      sorted.sort((a, b) => {
+        const aValue = a[sortConfig.field];
+        const bValue = b[sortConfig.field];
+
+        if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    return sorted;
+  }, [products, sortConfig]);
+
+  const filteredProducts = sortedProducts.filter(product => {
     const query = searchQuery.toLowerCase();
     return (
       product.name.toLowerCase().includes(query) ||
@@ -38,7 +54,7 @@ function App() {
         </nav>
       </header>
       <div className='items-content'>
-        <GridItems items={filteredProducts}/>
+        <GridItems items={filteredProducts} changeProduct={changeProduct} />
       </div>
       <footer className='navbar-bottom'>
         <CrudBar
@@ -46,6 +62,7 @@ function App() {
           deleteItem={deleteProduct}
           changeItem={changeProduct}
           items={products}
+          setSortConfig={setSortConfig}
         />
       </footer>
     </>

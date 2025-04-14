@@ -3,6 +3,12 @@
     gap: 1rem;
 }
 
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
 
 @media (min-width: 800px) {
     .grid-items { 
